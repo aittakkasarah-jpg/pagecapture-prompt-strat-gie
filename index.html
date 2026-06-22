@@ -221,6 +221,77 @@
     color: var(--gold);
     font-weight: 700;
   }
+  /* EMAIL FORM */
+  .email-form { margin-top: 1rem; }
+  .field {
+    display: flex; flex-direction: column; gap: 6px;
+    margin-bottom: .85rem;
+  }
+  .field label {
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--ink3);
+  }
+  .field input {
+    padding: 13px 16px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    color: var(--ink);
+    background: var(--cream);
+    outline: none;
+    transition: all .25s ease;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  .field input:focus {
+    border-color: var(--gold);
+    box-shadow: 0 0 0 4px rgba(174,141,104,.12);
+    background: var(--white);
+  }
+  .field input::placeholder { color: #b8b0a0; }
+
+  /* TALLY POPUP BUTTON */
+  .tally-btn {
+    display: block;
+    width: 100%;
+    padding: 16px 18px;
+    background: var(--ink);
+    color: var(--cream);
+    border: none;
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: .04em;
+    cursor: pointer;
+    margin-top: .25rem;
+    position: relative;
+    overflow: hidden;
+    transition: all .3s ease;
+    text-align: center;
+    text-decoration: none;
+    box-sizing: border-box;
+  }
+  .tally-btn span { position: relative; z-index: 2; }
+  .tally-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, var(--gold-deep), var(--gold));
+    opacity: 0;
+    transition: opacity .35s ease;
+    z-index: 1;
+  }
+  .tally-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(174,141,104,.3);
+  }
+  .tally-btn:hover::before { opacity: 1; }
+  .tally-btn:active { transform: translateY(0); }
 
   /* HERO RIGHT — PROMPT MOCKUP */
   .hero-right {
@@ -288,6 +359,48 @@
     font-size: 11px;
     line-height: 1.7;
     color: rgba(255,255,255,.55);
+  }
+  .prompt-card-locked {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem 1rem 1.5rem;
+    min-height: 240px;
+  }
+  .lock-circle {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(174,141,104,.25), rgba(174,141,104,.08));
+    border: 1px solid rgba(174,141,104,.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gold-light);
+    margin-bottom: 1.4rem;
+    box-shadow: 0 6px 20px rgba(174,141,104,.18) inset;
+  }
+  .lock-circle svg { width: 26px; height: 26px; }
+  .locked-main {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.45rem;
+    font-style: italic;
+    font-weight: 500;
+    color: #fff;
+    line-height: 1.3;
+    letter-spacing: -.005em;
+    max-width: 280px;
+    margin-bottom: .7rem;
+  }
+  .locked-sub {
+    font-size: 10.5px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--gold-light);
+    font-weight: 500;
+    opacity: .75;
   }
   .prompt-card-intro {
     color: rgba(255,255,255,.85);
@@ -782,22 +895,20 @@
       </div>
     </div>
 
-    <!-- TALLY FORM -->
+    <!-- EMAIL FORM -->
     <div class="form-block">
       <div class="form-title">Reçois le prompt gratuitement</div>
       <div class="form-sub">Rejoins +300 entrepreneurs qui structurent déjà leur contenu avec l'IA.</div>
 
-      <iframe
-        data-tally-src="https://tally.so/embed/vGKL2v?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1"
-        loading="lazy"
-        width="100%"
-        height="220"
-        frameborder="0"
-        marginheight="0"
-        marginwidth="0"
-        title="Formulaire d'inscription"
-        style="border:0; display:block; margin: .5rem 0 .25rem;">
-      </iframe>
+      <form class="email-form" onsubmit="return handleEmailSubmit(event)">
+        <div class="field">
+          <label for="email-input">Ton adresse email</label>
+          <input type="email" id="email-input" name="email" placeholder="prenom@email.com" required autocomplete="email">
+        </div>
+        <button type="submit" class="tally-btn">
+          <span>Recevoir mon prompt gratuit →</span>
+        </button>
+      </form>
 
       <div class="reassurance">Zéro spam · Tu te désinscris quand tu veux</div>
     </div>
@@ -816,22 +927,15 @@
           <div class="prompt-badge">Prompt IA</div>
         </div>
 
-        <div class="prompt-card-body">
-          <div class="prompt-card-intro">"Tu es un stratège de contenu spécialisé dans le personal branding…"</div>
-
-          <div class="pc-section">Contexte du projet</div>
-          <div class="pc-line">– Marque : <span class="pc-placeholder">[NOM DE LA MARQUE]</span></div>
-          <div class="pc-line">– Cible : <span class="pc-placeholder">[ton audience idéale]</span></div>
-          <div class="pc-line">– Objectif : <span class="pc-placeholder">[notoriété / vente / ...]</span></div>
-
-          <div class="pc-section">Ta mission</div>
-          <div class="pc-line">Construis une stratégie en 4 piliers, chaque pilier avec son format, son ton, ses thématiques…</div>
-
-          <div class="pc-section">Structure imposée</div>
-          <div class="pc-line">1. Pilier <span class="pc-placeholder">[NOM 1]</span> · Format · Ton</div>
-          <div class="pc-line">2. Pilier <span class="pc-placeholder">[NOM 2]</span> · Format · Ton</div>
-          <div class="pc-line">3. Pilier <span class="pc-placeholder">[NOM 3]</span> · Format · Ton</div>
-          <div class="pc-line">4. Pilier <span class="pc-placeholder">[NOM 4]</span> · Format · Ton</div>
+        <div class="prompt-card-locked">
+          <div class="lock-circle">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="11" width="16" height="10" rx="2"></rect>
+              <path d="M8 11V7a4 4 0 0 1 8 0v4"></path>
+            </svg>
+          </div>
+          <div class="locked-main">Entre ton mail pour accéder au prompt</div>
+          <div class="locked-sub">Gratuit · Envoyé instantanément</div>
         </div>
 
         <div class="prompt-card-bottom">
@@ -849,8 +953,7 @@
           </svg>
         </div>
         <div class="badge-text">
-          <strong>Gagne 5h/semaine</strong>
-          <span>Calendrier prêt en 2 min</span>
+          <strong>Gagne au moins 5h/semaine</strong>
         </div>
       </div>
 
@@ -861,8 +964,7 @@
           </svg>
         </div>
         <div class="badge-text">
-          <strong>+300 entrepreneurs</strong>
-          <span>l'utilisent déjà</span>
+          <strong>+300 entrepreneurs l'utilisent déjà</strong>
         </div>
       </div>
 
@@ -914,26 +1016,26 @@
   </div>
 </section>
 
-<!-- FINAL CTA — QUIZ -->
+<!-- FINAL CTA — APPEL STRATÉGIQUE -->
 <section class="final-cta">
   <div class="final-inner reveal">
-    <div class="final-tag">Et si ce n'était pas le contenu</div>
+    <div class="final-tag">Si tu veux aller plus loin</div>
     <h2 class="final-title">
-      Le vrai problème n'est peut-être pas <em>ton contenu.</em>
+      Et si tu préfères être <em>accompagnée main dans la main</em> ?
     </h2>
     <p class="final-text">
-      La plupart des entrepreneurs pensent manquer d'idées… alors que leur vrai blocage vient souvent de leur <strong>stratégie, acquisition ou positionnement</strong>. En 2 minutes, identifie exactement ce qui freine ta croissance.
+      1h30 pour faire le point complet sur ton offre, ton message, ton contenu et ton audience, identifier précisément <strong>ce qui bloque tes ventes</strong>, et repartir avec une offre claire, un positionnement précis et une stratégie de contenu concrète qui génère des demandes — sans y passer ta vie.
     </p>
 
-    <a href="https://blocageinstaquizz.netlify.app/" class="quiz-btn" target="_blank" rel="noopener">
-      Découvrir mon blocage Insta
+    <a href="https://callstrategique-sarahcoachinsta.netlify.app/" class="quiz-btn" target="_blank" rel="noopener">
+      Réserve ton appel stratégique
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <line x1="5" y1="12" x2="19" y2="12"></line>
         <polyline points="12 5 19 12 12 19"></polyline>
       </svg>
     </a>
 
-    <div class="final-micro">Diagnostic gratuit · Résultat instantané · 100% personnalisé</div>
+    <div class="final-micro">1h30 en visio · 100% personnalisé · Plan d'action concret à la sortie</div>
   </div>
 </section>
 
@@ -949,12 +1051,23 @@
   </div>
 </footer>
 
-<!-- TALLY SCRIPT -->
 <script>
-  var d=document,w="https://tally.so/widgets/embed.js",v=function(){"undefined"!=typeof Tally?Tally.loadEmbeds():d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach(function(e){e.src=e.dataset.tallySrc})};if("undefined"!=typeof Tally)v();else if(d.querySelector('script[src="'+w+'"]')==null){var s=d.createElement("script");s.src=w,s.onload=v,s.onerror=v,d.body.appendChild(s);}
-</script>
+  // Au submit du formulaire, on redirige vers Tally avec l'email pré-rempli
+  function handleEmailSubmit(e) {
+    e.preventDefault();
+    var input = document.getElementById('email-input');
+    var email = input.value.trim();
+    if (!email || !email.includes('@')) {
+      input.focus();
+      return false;
+    }
+    // Redirection vers Tally avec l'email passé en paramètre d'URL
+    // Tally pré-remplira automatiquement le champ s'il est aliasé "email"
+    var url = 'https://tally.so/r/vGKL2v?email=' + encodeURIComponent(email);
+    window.location.href = url;
+    return false;
+  }
 
-<script>
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
